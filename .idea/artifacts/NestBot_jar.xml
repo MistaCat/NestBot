@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NestBot:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NestBot_jar</output-path>
+    <root id="archive" name="NestBot.jar">
+      <element id="module-output" name="NestBot" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/Lombok.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/gson-2.8.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/Discord4J-dev-2.10.0-g4fd403d-6-shaded.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
