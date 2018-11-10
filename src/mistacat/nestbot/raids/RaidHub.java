@@ -7,6 +7,7 @@ import mistacat.nestbot.utils.Utils;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelLeaveEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelMoveEvent;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.handle.obj.Permissions;
@@ -25,18 +26,37 @@ public class RaidHub {
 
     @EventSubscriber
     public void onRaidJoin(UserVoiceChannelJoinEvent evt) {
-        if(!isRaidChannel(evt.getVoiceChannel()))
+        if (!isRaidChannel(evt.getVoiceChannel()))
             return;
 
         Utils.updateVoiceChannelPerms(evt.getVoiceChannel(), evt.getUser(), EnumSet.of(Permissions.VOICE_CONNECT), EnumSet.noneOf(Permissions.class));
     }
 
     @EventSubscriber
-    public void onRaidLeave(UserVoiceChannelLeaveEvent evt) {
-        if(!isRaidChannel(evt.getVoiceChannel()))
+    public void onRaidMoveIn(UserVoiceChannelMoveEvent evt) {
+        if (!isRaidChannel(evt.getNewChannel()))
             return;
 
-        if(getRaid(evt.getVoiceChannel()).isRaidActive())
+        Utils.updateVoiceChannelPerms(evt.getVoiceChannel(), evt.getUser(), EnumSet.of(Permissions.VOICE_CONNECT), EnumSet.noneOf(Permissions.class));
+    }
+
+    @EventSubscriber
+    public void onRaidMoveOut(UserVoiceChannelMoveEvent evt) {
+        if (!isRaidChannel(evt.getOldChannel()))
+            return;
+
+        if (getRaid(evt.getOldChannel()).isRaidActive())
+            return;
+
+        Utils.updateVoiceChannelPerms(evt.getVoiceChannel(), evt.getUser(), EnumSet.noneOf(Permissions.class), EnumSet.noneOf(Permissions.class));
+    }
+
+    @EventSubscriber
+    public void onRaidLeave(UserVoiceChannelLeaveEvent evt) {
+        if (!isRaidChannel(evt.getVoiceChannel()))
+            return;
+
+        if (getRaid(evt.getVoiceChannel()).isRaidActive())
             return;
 
         Utils.updateVoiceChannelPerms(evt.getVoiceChannel(), evt.getUser(), EnumSet.noneOf(Permissions.class), EnumSet.noneOf(Permissions.class));
