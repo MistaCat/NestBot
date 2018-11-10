@@ -12,11 +12,13 @@ import mistacat.nestbot.commands.adminCommands.CommandUnsuspend;
 import mistacat.nestbot.punishment.BlacklistManager;
 import mistacat.nestbot.punishment.SuspensionHub;
 import mistacat.nestbot.raids.FeedbackHub;
+import mistacat.nestbot.raids.RaidHub;
 import mistacat.nestbot.utils.Utils;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
 import sx.blah.discord.handle.obj.IGuild;
 
 /**
@@ -29,13 +31,15 @@ public class NestBot {
     public static CommandHub commands = new CommandHub();
     public static FeedbackHub feedback = new FeedbackHub();
     public static SuspensionHub suspensions = new SuspensionHub();
+    public static RaidHub raidHub = new RaidHub();
 
     public static void main(String[] args) {
 
-        client = new ClientBuilder().withToken("Bot Token Here").build();
+        client = new ClientBuilder().withToken("Bot token here").build();
         client.getDispatcher().registerListener(new NestBot());
         client.getDispatcher().registerListener(commands);
         client.getDispatcher().registerListener(feedback);
+        client.getDispatcher().registerListener(raidHub);
 
         client.login();
     }

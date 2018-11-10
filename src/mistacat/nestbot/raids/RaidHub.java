@@ -3,9 +3,15 @@ package mistacat.nestbot.raids;
 import lombok.Getter;
 import mistacat.nestbot.Constants;
 import mistacat.nestbot.NestBot;
+import mistacat.nestbot.utils.Utils;
+import sx.blah.discord.api.events.EventSubscriber;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelLeaveEvent;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
+import sx.blah.discord.handle.obj.Permissions;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -16,6 +22,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Getter
 public class RaidHub {
     public static List<Raid> activeRaids = new CopyOnWriteArrayList<>();
+
+    @EventSubscriber
+    public void onRaidJoin(UserVoiceChannelJoinEvent evt) {
+        if(!isRaidChannel(evt.getVoiceChannel()))
+            return;
+
+        Utils.updateVoiceChannelPerms(evt.getVoiceChannel(), evt.getUser(), EnumSet.of(Permissions.VOICE_CONNECT), EnumSet.noneOf(Permissions.class));
+    }
+
+    @EventSubscriber
+    public void onRaidLeave(UserVoiceChannelLeaveEvent evt) {
+        if(!isRaidChannel(evt.getVoiceChannel()))
+            return;
+
+        if(getRaid(evt.getVoiceChannel()).isRaidActive())
+            return;
+
+        Utils.updateVoiceChannelPerms(evt.getVoiceChannel(), evt.getUser(), EnumSet.noneOf(Permissions.class), EnumSet.noneOf(Permissions.class));
+    }
 
     /**
      * Starts a raid. set size to 0 for infinite, and set timer to -1 for no timer.
@@ -54,4 +79,20 @@ public class RaidHub {
     public static boolean isLeading(IUser leader) {
         return getRaid(leader) != null;
     }
+
+    /**
+     * Gets an active raid from it's voice channel. Will return null if the channel is not a raid channel.
+     * @param channel
+     * @return
+     */
+    public static Raid getRaid(IVoiceChannel channel) {
+        for (Raid raid : activeRaids) {
+            if (raid.getRaidRoom() == channel)
+                return raid;
+        }
+
+        return null;
+    }
+
+    public static boolean isRaidChannel(IVoiceChannel channel) { return getRaid(channel) != null; }
 }

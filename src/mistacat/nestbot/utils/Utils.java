@@ -102,7 +102,10 @@ public class Utils {
      * @param user
      */
     public static void moveUser(IUser user, IVoiceChannel target) {
-        RequestBuffer.request(() -> user.moveToVoiceChannel(target));
+        RequestBuffer.request(() -> {
+            if (user.getVoiceStateForGuild(NestBot.getGuild()).getChannel() != null)
+                user.moveToVoiceChannel(target);
+        });
     }
 
     /**

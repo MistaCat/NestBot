@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * A leader feedback class that holds all the information for a feedback
@@ -62,23 +63,23 @@ public class LeaderFeedback {
     }
 
     private void logFeedback() {
-        int pos = feedbackMsg.getReactionByEmoji(ReactionEmoji.of("\uD83D\uDC4D")).getCount();
-        int neg = feedbackMsg.getReactionByEmoji(ReactionEmoji.of("\uD83D\uDC4E")).getCount();
+        int pos = feedbackMsg.getReactionByEmoji(ReactionEmoji.of("\uD83D\uDC4D"))
+                .getUsers().stream().filter(u -> !u.isBot() && raiders.contains(u)).collect(Collectors.toList()).size();
+
+        int neg = feedbackMsg.getReactionByEmoji(ReactionEmoji.of("\uD83D\uDC4E"))
+                .getUsers().stream().filter(u -> !u.isBot() && raiders.contains(u)).collect(Collectors.toList()).size();;
 
         EmbedBuilder pollResults = new EmbedBuilder();
         pollResults.withTitle(leader.getName() + "'s feedback");
         pollResults.withColor(0, 255, 0);
         pollResults.withThumbnail(leader.getAvatarURL());
-        pollResults.withDesc("Positive votes: " + (pos - 2) +
-                "\nNegative votes: " + (neg - 2) +
-                "\nComments: " + (feedbackRoom.getMessageHistory().size() - 1));
+        pollResults.withDesc("Positive votes: " + pos +
+                "\nNegative votes: " + neg +
+                "\nComments: " + feedbackRoom.getMessageHistory().stream()
+                                    .filter(msg -> !msg.getAuthor().isBot()).collect(Collectors.toList()).size());
         Utils.sendEmbed(NestBot.getGuild().getChannelByID(Constants.FEEDBACK_LOGS), pollResults.build());
-        feedbackMsg.delete();
 
-        for (IMessage msg : feedbackRoom.getMessageHistory().asArray()) {
-            if (msg.getContent().isEmpty())
-                continue;
-
+        for (IMessage msg : feedbackRoom.getMessageHistory().stream().filter(msg -> !msg.getAuthor().isBot()).collect(Collectors.toList())) {
             Utils.sendMessage(NestBot.getGuild().getChannelByID(Constants.FEEDBACK_LOGS),
                     msg.getAuthor() + " commented: " + msg.getContent());
         }
