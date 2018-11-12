@@ -66,6 +66,11 @@ public class CommandVerify extends Command {
 
         JSONObject json = Verification.getRealmPlayer(args[0]);
 
+        if (json.has("error")) {
+            Utils.sendPM(msg.getAuthor(), "Please ensure your realmeye information is public!");
+            return;
+        }
+
         if ((int) json.get("fame") < Verification.FAME_REQ) {
             Utils.sendPM(msg.getAuthor(), "You do not meet the required " + Verification.FAME_REQ + " alive fame!");
             return;
@@ -78,9 +83,9 @@ public class CommandVerify extends Command {
 
         JSONArray description = json.getJSONArray("description");
         for (int i = 0; i < description.length(); i++) {
-            if (Verification.getVerificationRequests().get(msg.getAuthor()).equalsIgnoreCase(description.getString(i))) {
+            if (description.getString(i).toLowerCase().contains(Verification.getVerificationRequests().get(msg.getAuthor()).toLowerCase())) {
                 msg.getAuthor().addRole(NestBot.getGuild().getRoleByID(Constants.VERIFIED));
-                NestBot.getGuild().setUserNickname(msg.getAuthor(), json.getString("name"));
+                Utils.changeNickname(msg.getAuthor(), json.getString("name"));
                 Verification.getVerificationRequests().remove(msg.getAuthor());
                 Utils.sendPM(msg.getAuthor(), "Thank you for verifying in pest control! Good luck on the nest raids!");
                 logVerification(msg.getAuthor(), json.getString("name"));

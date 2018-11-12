@@ -109,6 +109,15 @@ public class Utils {
     }
 
     /**
+     * Changes a user's nickname in pest control
+     * @param user
+     * @param name
+     */
+    public static void changeNickname(IUser user, String name) {
+        RequestBuffer.request(() -> NestBot.getGuild().setUserNickname(user, name));
+    }
+
+    /**
      * Gets a user from a mention string
      * @param mention
      * @return
