@@ -5,6 +5,7 @@ import lombok.Setter;
 import mistacat.nestbot.utils.Utils;
 import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.util.EmbedBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -21,15 +22,27 @@ public class Verification {
     @Getter @Setter private static int vericodes = 0;
 
     public static final String API_URL = "http://www.tiffit.net/RealmInfo/api/user?u=";
-    public static final int STAR_REQ = 10;
-    public static final int FAME_REQ = 400;
+    public static final int STAR_REQ = 30;
+    public static final int FAME_REQ = 3000;
+    public static final int CLASS_REQ = 6;
+
+    public static void setupVerification() {
+        NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL).bulkDelete();
+        EmbedBuilder msg = new EmbedBuilder();
+        msg.withTitle("How to verify!");
+        msg.withColor(0, 0, 255);
+        msg.withThumbnail(NestBot.client.getApplicationIconURL());
+        msg.withDesc("Please type -verify in this channel to receive instructions on how to verify!");
+        msg.appendField("REQUIREMENTS", "30 Stars\n3000 Alive Fame\n3 - 6/8+ OR 2 - 8/8", true);
+        Utils.sendEmbed(NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL), msg.build());
+    }
 
     /**
      * Creates a verification request for a discord user.
      * @param user
      */
     public static String requestVerificationUser(IUser user) {
-        String passcode = "PEST" + getVericodes();
+        String passcode = "PEST_" + getVericodes();
         getVerificationRequests().put(user, passcode);
         setVericodes(getVericodes() + 1);
         return passcode;

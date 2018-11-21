@@ -6,23 +6,23 @@ package mistacat.nestbot;
  */
 public class Constants {
     //Text channel ID's
-    public static final Long VERIFY_CHANNEL = 438924428407996426L;
-    public static final Long RAID_CHANNEL = 499667395527442440L;
-    public static final Long FEEDBACK_LOGS = 499573176229953538L;
-    public static final Long SUSPENSION_LOGS = 406612655458091008L;
-    public static final Long RUN_LOGS = 496133491633684480L;
-    public static final Long VERIFICATION_LOGS = 502657964696666127L;
+    public static final Long VERIFY_CHANNEL = 514790514739118092L;
+    public static final Long RAID_CHANNEL = 514792731365736459L;
+    public static final Long RAID_COMMANDS = 514792665251053598L;
+    public static final Long FEEDBACK_LOGS = 514793290042966016L;
+    public static final Long SUSPENSION_LOGS = 514793256471625730L;
+    public static final Long RUN_LOGS = 514793222426460171L;
+    public static final Long VERIFICATION_LOGS = 514793185046953995L;
 
     //Voice channel ID's
-    public static final Long TEST_VOICE = 499568910622916608L;
+    public static final Long TEST_VOICE = 514793666817163294L;
 
     //Category ID's
-    public static final Long RAID_CATEGORY = 499568545747697664L;
-    public static final Long FEEDBACK_CATEGORY = 499573053429383178L;
+    public static final Long RAID_CATEGORY = 514793629366353920L;
+    public static final Long FEEDBACK_CATEGORY = 514796693691301913L;
 
     //Role ID's
-    public static final Long SUSPENDED = 408106916590387221L;
-    public static final Long VERIFIED = 406576454055362570L;
-    public static final Long TECH = 421485823817416705L;
+    public static final Long SUSPENDED = 514796932271702036L;
+    public static final Long VERIFIED = 514790630816481301L;
 
 }

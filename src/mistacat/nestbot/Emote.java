@@ -10,12 +10,12 @@ import sx.blah.discord.handle.impl.obj.ReactionEmoji;
  */
 @Getter @AllArgsConstructor
 public enum Emote {
-    NEST(":nest:", 438911027594264576L),
-    NEST_KEY(":nestkey:", 410250309227642880L),
-    QOT(":qot:", 438502758790987777L),
-    PRIEST(":priesty:", 438502718798299168L),
-    PALLY(":palbuff:", 438503234630451221L),
-    WARRIOR(":warbuff:", 438503161209290752L);
+    NEST(":Nest:", 514800256077266945L),
+    NEST_KEY(":NestKey:", 514800274242797578L),
+    QOT(":QoT:", 514800353649098760L),
+    PRIEST(":Priest:", 514800332467994639L),
+    PALLY(":Paladin:", 514800298058055701L),
+    WARRIOR(":Warrior:", 514800368899719168L);
 
     private String emoteName;
     private Long ID;

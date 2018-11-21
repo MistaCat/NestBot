@@ -24,7 +24,7 @@ public class CommandHub extends ArrayList<Command> {
 
     @EventSubscriber
     public void onCommand(MessageReceivedEvent evt) {
-        if (evt.getChannel() == NestBot.getGuild().getChannelByID(438924428407996426L) && !evt.getMessage().getContent().startsWith(COMMAND_PREFIX)) {
+        if (evt.getChannel() == NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL) && !evt.getMessage().getContent().startsWith(COMMAND_PREFIX)) {
             removeMsg(evt);
             return;
         }
@@ -43,13 +43,13 @@ public class CommandHub extends ArrayList<Command> {
                 return;
             }
 
-            if (getCommand(alias) instanceof CommandVerify && (evt.getChannel() != NestBot.getGuild().getChannelByID(438924428407996426L))) {
+            if (getCommand(alias) instanceof CommandVerify && (evt.getChannel() != NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL))) {
                 Utils.sendPM(evt.getAuthor(), "Please verify in the verification channel!");
                 removeMsg(evt);
                 return;
             }
 
-            if (getCommand(alias).getMinRank().isAtLeast(Rank.ALMOST_RL) && evt.getChannel() != NestBot.getGuild().getChannelByID(438820187039334440L)) {
+            if (getCommand(alias).getMinRank().isAtLeast(Rank.ALMOST_RL) && evt.getChannel() != NestBot.getGuild().getChannelByID(Constants.RAID_COMMANDS)) {
                 Utils.sendPM(evt.getAuthor(), "Please use the raid leader commands channel!");
                 removeMsg(evt);
                 return;
@@ -59,6 +59,9 @@ public class CommandHub extends ArrayList<Command> {
 
             if (evt.getChannel() == NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL))
                 removeMsg(evt);
+        } else {
+            Utils.sendPM(evt.getAuthor(), "Invalid command!");
+            removeMsg(evt);
         }
     }
 

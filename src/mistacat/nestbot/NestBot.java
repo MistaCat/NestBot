@@ -35,7 +35,7 @@ public class NestBot {
 
     public static void main(String[] args) {
 
-        client = new ClientBuilder().withToken("Bot token here").build();
+        client = new ClientBuilder().withToken("Bot token here!").build();
         client.getDispatcher().registerListener(new NestBot());
         client.getDispatcher().registerListener(commands);
         client.getDispatcher().registerListener(feedback);
@@ -49,13 +49,14 @@ public class NestBot {
      * @return
      */
     public static IGuild getGuild() {
-        return client.getGuildByID(406566219169267712L);
+        return client.getGuildByID(514788290809954305L);
     }
 
     @EventSubscriber
     public void onLogin(ReadyEvent evt) {
         registerCommands();
         BlacklistManager.setupBlacklist();
+        Verification.setupVerification();
 
         Utils.sendConsoleDebug("Nest bot has started!");
     }

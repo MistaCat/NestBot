@@ -44,7 +44,6 @@ public class LeaderFeedback {
         this.feedbackRoom = NestBot.getGuild().createChannel(leader.getName().toLowerCase().replace(" ", "-") + "-feedback");
         feedbackRoom.changeCategory(NestBot.getGuild().getCategoryByID(Constants.FEEDBACK_CATEGORY));
         Utils.updateChannelPerms(feedbackRoom, NestBot.getGuild().getEveryoneRole(), EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.READ_MESSAGES));
-        Utils.updateChannelPerms(feedbackRoom, NestBot.getGuild().getRoleByID(Constants.TECH), EnumSet.allOf(Permissions.class), EnumSet.noneOf(Permissions.class));
 
         for (IUser user : raiders)
             Utils.updateChannelPerms(feedbackRoom, user, EnumSet.of(Permissions.READ_MESSAGES), EnumSet.noneOf(Permissions.class));

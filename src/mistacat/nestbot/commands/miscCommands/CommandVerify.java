@@ -81,6 +81,21 @@ public class CommandVerify extends Command {
             return;
         }
 
+        JSONArray characters = json.getJSONArray("characters");
+        int points = 0;
+        for (int i = 0; i < characters.length(); i++) {
+            if (characters.getJSONObject(i).getString("stats_maxed").equalsIgnoreCase("6/8")
+                    || characters.getJSONObject(i).getString("stats_maxed").equalsIgnoreCase("7/8"))
+                points = points + 2;
+            else if (characters.getJSONObject(i).getString("stats_maxed").equalsIgnoreCase("8/8"))
+                points = points + 3;
+        }
+
+        if (points < Verification.CLASS_REQ) {
+            Utils.sendPM(msg.getAuthor(), "You do not have the classes required to verify! (3 - 6/8) or (2 - 8/8)");
+            return;
+        }
+
         JSONArray description = json.getJSONArray("description");
         for (int i = 0; i < description.length(); i++) {
             if (description.getString(i).toLowerCase().contains(Verification.getVerificationRequests().get(msg.getAuthor()).toLowerCase())) {

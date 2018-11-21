@@ -12,13 +12,13 @@ import sx.blah.discord.handle.obj.IUser;
 @Getter @AllArgsConstructor
 public enum Rank {
     DEFAULT(null, false),
-    ALMOST_RL(422614873772392448L, true),
-    RL(406575952236380160L, true),
-    SECURITY(438501150874927116L, true),
-    OFFICER(406575543459512333L, true),
-    HEAD_RL(470477690332381185L, true),
-    ADMIN(406575140693082123L, true),
-    OWNER(483503659771101207L, true);
+    ALMOST_RL(514789997262405645L, true),
+    RL(514789718253109249L, true),
+    SECURITY(514791076490379274L, true),
+    OFFICER(514790850816114699L, true),
+    HEAD_RL(514789673281912833L, true),
+    ADMIN(514789410538127362L, true),
+    OWNER(514789379311665152L, true);
 
     private Long ID;
     private boolean canSpeak;

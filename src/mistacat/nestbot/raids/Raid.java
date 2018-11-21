@@ -63,7 +63,6 @@ public class Raid {
 
         Utils.updateVoiceChannelPerms(raidRoom, NestBot.getGuild().getEveryoneRole(), EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.VOICE_CONNECT, Permissions.VOICE_SPEAK));
         Utils.updateVoiceChannelPerms(raidRoom, NestBot.getGuild().getRoleByID(Constants.VERIFIED), EnumSet.of(Permissions.VOICE_CONNECT), EnumSet.noneOf(Permissions.class));
-        Utils.updateVoiceChannelPerms(raidRoom, NestBot.getGuild().getRoleByID(Constants.TECH), EnumSet.allOf(Permissions.class), EnumSet.noneOf(Permissions.class));
         for (Rank rank : Rank.values())
             if (rank.isCanSpeak())
                 Utils.updateVoiceChannelPerms(raidRoom, NestBot.getGuild().getRoleByID(rank.getID()), EnumSet.allOf(Permissions.class), EnumSet.noneOf(Permissions.class));
