@@ -13,6 +13,8 @@ public class Constants {
     public static final Long SUSPENSION_LOGS = 514793256471625730L;
     public static final Long RUN_LOGS = 514793222426460171L;
     public static final Long VERIFICATION_LOGS = 514793185046953995L;
+    public static final Long RAID_LEADER_VOTE = 553890494200152065L;
+    public static final Long LOOTS = 514795490118860800L;
 
     //Voice channel ID's
     public static final Long TEST_VOICE = 514793666817163294L;

@@ -12,7 +12,7 @@ import sx.blah.discord.util.EmbedBuilder;
 
 public class CommandHeadcount extends Command {
     public CommandHeadcount() {
-        setAliases(new String[] {"headcount", "unnecessaryping"});
+        setAliases(new String[] {"headcount", "unnecessaryping", "hc"});
         setMinRank(Rank.ALMOST_RL);
     }
 

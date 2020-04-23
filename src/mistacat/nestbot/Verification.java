@@ -3,13 +3,14 @@ package mistacat.nestbot;
 import lombok.Getter;
 import lombok.Setter;
 import mistacat.nestbot.utils.Utils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,9 +23,9 @@ public class Verification {
     @Getter @Setter private static int vericodes = 0;
 
     public static final String API_URL = "http://www.tiffit.net/RealmInfo/api/user?u=";
-    public static final int STAR_REQ = 30;
-    public static final int FAME_REQ = 3000;
-    public static final int CLASS_REQ = 6;
+    public static final int STAR_REQ = 20;
+    public static final int FAME_REQ = 2000;
+    public static final int CLASS_REQ = 2;
 
     public static void setupVerification() {
         NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL).bulkDelete();
@@ -33,7 +34,7 @@ public class Verification {
         msg.withColor(0, 0, 255);
         msg.withThumbnail(NestBot.client.getApplicationIconURL());
         msg.withDesc("Please type -verify in this channel to receive instructions on how to verify!");
-        msg.appendField("REQUIREMENTS", "30 Stars\n3000 Alive Fame\n3 - 6/8+ OR 2 - 8/8", true);
+        msg.appendField("REQUIREMENTS", "20 Stars\n2000 Alive Fame\n1 - 6/8 Class", true);
         Utils.sendEmbed(NestBot.getGuild().getChannelByID(Constants.VERIFY_CHANNEL), msg.build());
     }
 
@@ -54,21 +55,19 @@ public class Verification {
      * @return
      * @throws Exception
      */
-    public static String readJsonURL(String urlString) throws Exception {
-        BufferedReader reader = null;
+    public static String readJsonURL(String urlString) {
         try {
             URL url = new URL(urlString);
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuffer buffer = new StringBuffer();
-            int read;
-            char[] chars = new char[1024];
-            while ((read = reader.read(chars)) != -1)
-                buffer.append(chars, 0, read);
+            URLConnection con = url.openConnection();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            String body = IOUtils.toString(in, encoding);
 
-            return buffer.toString();
-        } finally {
-            if (reader != null)
-                reader.close();
+            return body;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 
@@ -78,14 +77,11 @@ public class Verification {
      * @return
      */
     public static JSONObject getRealmPlayer(String username) {
-        try {
-            return new JSONObject(readJsonURL(API_URL + username));
-        } catch (Exception ex) {
-            Utils.sendConsoleDebug("Failed to load json object from URL");
-        }
+        String json = readJsonURL(API_URL + username);
 
-        return null;
+        if (json != null)
+            return new JSONObject(json);
+        else
+            return null;
     }
-
-
 }

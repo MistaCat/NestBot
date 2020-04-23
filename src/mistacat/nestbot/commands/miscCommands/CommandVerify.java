@@ -58,13 +58,13 @@ public class CommandVerify extends Command {
             return;
         }
 
-        if (Verification.getRealmPlayer(args[0]) == null) {
+        JSONObject json = Verification.getRealmPlayer(args[0].replaceAll("[^A-Za-z0-9]", ""));
+
+        if (json == null) {
             Utils.sendPM(msg.getAuthor(), "Could not get realmeye information.\n" +
                     "Please make sure your realmeye name is correct. If issues persist contact MistaCat on discord!");
             return;
         }
-
-        JSONObject json = Verification.getRealmPlayer(args[0]);
 
         if (json.has("error")) {
             Utils.sendPM(msg.getAuthor(), "Please ensure your realmeye information is public!");
@@ -92,7 +92,7 @@ public class CommandVerify extends Command {
         }
 
         if (points < Verification.CLASS_REQ) {
-            Utils.sendPM(msg.getAuthor(), "You do not have the classes required to verify! (3 - 6/8) or (2 - 8/8)");
+            Utils.sendPM(msg.getAuthor(), "You do not have the classes required to verify! (1 - 6/8)");
             return;
         }
 

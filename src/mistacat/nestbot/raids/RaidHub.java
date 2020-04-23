@@ -5,16 +5,23 @@ import mistacat.nestbot.Constants;
 import mistacat.nestbot.NestBot;
 import mistacat.nestbot.utils.Utils;
 import sx.blah.discord.api.events.EventSubscriber;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelLeaveEvent;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelMoveEvent;
+import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.handle.obj.Permissions;
+import sx.blah.discord.util.EmbedBuilder;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Manages all the current nest runs that are currently active.
@@ -23,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Getter
 public class RaidHub {
     public static List<Raid> activeRaids = new CopyOnWriteArrayList<>();
+    private final ScheduledExecutorService TIMER = new ScheduledThreadPoolExecutor(2);
 
     @EventSubscriber
     public void onRaidJoin(UserVoiceChannelJoinEvent evt) {

@@ -167,6 +167,10 @@ public class Raid {
         Utils.addReaction(raidMsg, Emote.PRIEST.getEmote());
         Utils.addReaction(raidMsg, Emote.WARRIOR.getEmote());
         Utils.addReaction(raidMsg, Emote.PALLY.getEmote());
+        Utils.addReaction(raidMsg, Emote.KNIGHT.getEmote());
+        Utils.addReaction(raidMsg, Emote.MYSTIC.getEmote());
+        Utils.addReaction(raidMsg, Emote.PURI.getEmote());
+        Utils.addReaction(raidMsg, Emote.SLOW.getEmote());
 
         if (countdown < 0)
             msg.withFooterText("The raid will begin when the raid leader is ready");

@@ -15,7 +15,11 @@ public enum Emote {
     QOT(":QoT:", 514800353649098760L),
     PRIEST(":Priest:", 514800332467994639L),
     PALLY(":Paladin:", 514800298058055701L),
-    WARRIOR(":Warrior:", 514800368899719168L);
+    WARRIOR(":Warrior:", 514800368899719168L),
+    KNIGHT(":Knight:", 541210324024557578L),
+    MYSTIC(":Mystic:", 541209460820148225L),
+    PURI(":Purification:", 552615953821859840L),
+    SLOW(":Slow:", 597135909070176266L);
 
     private String emoteName;
     private Long ID;

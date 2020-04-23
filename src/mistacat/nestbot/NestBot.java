@@ -2,13 +2,11 @@ package mistacat.nestbot;
 
 import lombok.Getter;
 import mistacat.nestbot.commands.CommandHub;
+import mistacat.nestbot.commands.adminCommands.*;
 import mistacat.nestbot.commands.leaderCommands.*;
 import mistacat.nestbot.commands.miscCommands.CommandCommands;
+import mistacat.nestbot.commands.miscCommands.CommandLeaderVote;
 import mistacat.nestbot.commands.miscCommands.CommandVerify;
-import mistacat.nestbot.commands.adminCommands.CommandBlacklist;
-import mistacat.nestbot.commands.adminCommands.CommandSuspend;
-import mistacat.nestbot.commands.adminCommands.CommandUnblacklist;
-import mistacat.nestbot.commands.adminCommands.CommandUnsuspend;
 import mistacat.nestbot.punishment.BlacklistManager;
 import mistacat.nestbot.punishment.SuspensionHub;
 import mistacat.nestbot.raids.FeedbackHub;
@@ -18,7 +16,7 @@ import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
-import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IGuild;
 
 /**
@@ -34,8 +32,7 @@ public class NestBot {
     public static RaidHub raidHub = new RaidHub();
 
     public static void main(String[] args) {
-
-        client = new ClientBuilder().withToken("Bot token here!").build();
+        client = new ClientBuilder().withToken("Your token here").build();
         client.getDispatcher().registerListener(new NestBot());
         client.getDispatcher().registerListener(commands);
         client.getDispatcher().registerListener(feedback);
@@ -56,9 +53,19 @@ public class NestBot {
     public void onLogin(ReadyEvent evt) {
         registerCommands();
         BlacklistManager.setupBlacklist();
-        Verification.setupVerification();
+        //Verification.setupVerification();
 
         Utils.sendConsoleDebug("Nest bot has started!");
+    }
+
+    @EventSubscriber
+    public void onMessageInLoots(MessageReceivedEvent evt) {
+        if (evt.getChannel() == NestBot.getGuild().getChannelByID(Constants.LOOTS)) {
+            if (evt.getMessage().getContent().contains("http") || !evt.getMessage().getAttachments().isEmpty())
+                return;
+            else
+                evt.getMessage().delete();
+        }
     }
 
     private void registerCommands() {
@@ -73,5 +80,7 @@ public class NestBot {
         commands.add(new CommandBlacklist());
         commands.add(new CommandUnblacklist());
         commands.add(new CommandCommands());
+        commands.add(new CommandLeaderVote());
+        commands.add(new CommandForceEndRaid());
     }
 }

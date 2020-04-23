@@ -49,7 +49,8 @@ public class CommandHub extends ArrayList<Command> {
                 return;
             }
 
-            if (getCommand(alias).getMinRank().isAtLeast(Rank.ALMOST_RL) && evt.getChannel() != NestBot.getGuild().getChannelByID(Constants.RAID_COMMANDS)) {
+            if (getCommand(alias).getMinRank().isAtLeast(Rank.ALMOST_RL) && evt.getChannel() != NestBot.getGuild().getChannelByID(Constants.RAID_COMMANDS) &&
+                    !Rank.getHighestRank(evt.getAuthor()).isAtLeast(Rank.HEAD_RL)) {
                 Utils.sendPM(evt.getAuthor(), "Please use the raid leader commands channel!");
                 removeMsg(evt);
                 return;
